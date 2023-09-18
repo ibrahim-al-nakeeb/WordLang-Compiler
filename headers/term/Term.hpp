@@ -18,6 +18,7 @@ public:
 	Term(void* value, Type type);
 	virtual ~Term();
 
+	void setValue(void* value, Type type);
 	void* getValue() const;
 	Type getType() const;
 	void print(int level, ofstream& out);

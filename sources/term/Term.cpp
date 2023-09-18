@@ -8,22 +8,22 @@ Term::Term()  {
 Term::Term(const Term& t) {
 
 	this->type = t.type;
-	switch (type) {
-		case Type::integer:
-			this->value = new int(*(int*)t.value);
-			break;
-		case Type::character:
-			this->value = new char(*(char*)t.value);
-			break;
-		case Type::word:
-		case Type::sentence:
-		case Type::identifier:
-			this->value = new string(*(string*)t.value);
-			break;
-	}
+	this->setValue(t.value, t.type);
 }
+
 Term::Term(void* value, Type type) {
 	
+	this->type = type;
+	this->setValue(value, type);
+}
+
+Term::~Term() {
+	free(value);
+}
+
+
+void Term::setValue(void* value, Type type) {
+	free(this->value);
 	this->type = type;
 
 	switch (type) {
@@ -39,10 +39,6 @@ Term::Term(void* value, Type type) {
 			this->value = new string(*(string*)value);
 			break;
 	}
-	free(value);
-}
-
-Term::~Term() {
 	free(value);
 }
 
