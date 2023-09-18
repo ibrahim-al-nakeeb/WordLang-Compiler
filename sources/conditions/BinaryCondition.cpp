@@ -9,7 +9,7 @@ BinaryCondition::~BinaryCondition() {
 
 bool BinaryCondition::evaluate() {
 
-	Terminal left_term = left->evaluate(), right_term = right->evaluate();
+	Term left_term = left->evaluate(), right_term = right->evaluate();
 
 	Type left_type = left_term.getType(), right_type = right_term.getType();
 
@@ -110,13 +110,13 @@ bool BinaryCondition::evaluate() {
 }
 
 void BinaryCondition::print(int level, ofstream& out) {
-	printLevels(level, out);
+	printDepth(level, out);
 	out << "new BinaryCondition(" << endl;
 	left->print(level + 1, out);
 	out << ", " << endl;
 	right->print(level + 1, out);
 	out << ", " << endl;
-	printLevels(level + 1, out);
+	printDepth(level + 1, out);
 	switch (op) {
 		case ComparisonOperator::GreaterThanOrEqual:
 			out << "ComparisonOperator::GreaterThanOrEqual";
@@ -146,6 +146,6 @@ void BinaryCondition::print(int level, ofstream& out) {
 			break;
 	}
 	out << endl;
-	printLevels(level, out);
+	printDepth(level, out);
 	out << ")";
 }
