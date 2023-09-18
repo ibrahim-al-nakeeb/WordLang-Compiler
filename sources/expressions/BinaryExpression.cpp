@@ -22,7 +22,6 @@ Term BinaryExpression::evaluate() {
 	}
 }
 
-
 Term BinaryExpression::plusAction() {
 	Term left_term = this->left->evaluate(), right_t = this->right->evaluate();
 
@@ -381,7 +380,7 @@ Term BinaryExpression::indexAction() {
 }
 
 void BinaryExpression::print(int level, ofstream& out) {
-	
+
 	printDepth(level, out);
 	out << "new BinaryExpression(" << endl;
 	left->print(level + 1, out);
