@@ -58,7 +58,7 @@ void build(list<Statement*> *prog) {
 		cout << "Error opening file" << endl;
 		exit(EXIT_FAILURE);
 	}
-	result << "#include \"../../headers/headers.hpp\"" << endl;
+	result << "#include \"../../headers/wordlang.hpp\"" << endl;
 	result << endl << endl << endl;
 	result << "int main(int argc, char *argv[]) {" << endl << endl;
 	result << "\tlist<Statement*> *program = new list<Statement*>({" << endl;
