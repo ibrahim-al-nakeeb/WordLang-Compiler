@@ -33,12 +33,34 @@
 %type <INTEGER> type
 %type <VOID> term
 %type <VOID> variablesList
+%type <VOID> expression
 
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
 
 %%
+
+expression:	
+		expression CONCAT expression {
+			$$ = new BinaryExpression((Expression*)$1, Action::concat, (Expression*)$3);
+		}		
+	|	expression MINUS expression {
+			$$ = new BinaryExpression((Expression*)$1, Action::minus, (Expression*)$3);
+		}
+	|	expression PLUS expression {
+			$$ = new BinaryExpression((Expression*)$1, Action::plus, (Expression*)$3);	
+		}
+	|	expression INDEX expression {
+			$$ = new BinaryExpression((Expression*)$1, Action::index, (Expression*)$3);
+		}
+	|	LPAREN expression RPAREN {
+			$$ = $2;
+		}
+	|	term {
+			$$ = new UnaryExpression((term*)$1);
+		}
+	;
 
 variablesList:
 		variablesList COMMA IDENTIFIER { 
