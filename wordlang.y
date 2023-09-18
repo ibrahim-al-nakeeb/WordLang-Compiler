@@ -31,16 +31,91 @@
 %token <STRING> IDENTIFIER WORD_LITERAL SENTENCE_LITERAL
 
 %type <INTEGER> type
-%type <VOID> term
+%type <VOID> term, 
 %type <VOID> variablesList
 %type <VOID> expression
 %type <VOID> condition
+%type <VOID> control
+%type <VOID> statement
+%type <VOID> statements
+%type <VOID> block
 
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
 
 %%
+
+control:
+		IF LPAREN condition RPAREN block %prec PREC_ELSE {
+			$$ = new If((Condition*)$3, (list<Statement*>*)$5);
+		}
+	|	IF LPAREN condition RPAREN block ELSE block {
+			$$ = new IfElse((Condition*)$3, (list<Statement*>*)$5, (list<Statement*>*)$7);
+		}
+	|	WHILE LPAREN condition RPAREN block {
+			$$ = new While((Condition*)$3, (list<Statement*>*)$5);
+		}
+	|	LOOP LPAREN expression RPAREN block {
+			$$ = new Loop((Expression*)$3, (list<Statement*>*)$5);
+		}
+	;
+
+
+
+block:
+		LBRACE statements RBRACE { $$ = $2; }
+	|	statement { 
+			list<Statement*> *list = new ::list<Statement*>();
+			list->push_back((Statement*)$1);
+			$$ = list;
+	 	}
+	;
+
+
+
+statements:
+		statements statement {
+			static_cast<list<Statement*>*>($1)->push_back((Statement*)$2); 
+			$$ = $1;
+		}
+	|	statement { 
+			list<Statement*> *list = new ::list<Statement*>();
+			list->push_back((Statement*)$1);
+			$$ = list;
+		}
+	;
+
+
+
+statement:
+		type IDENTIFIER variablesList SEMICOLON {
+			list<string> *ptr = static_cast<list<string>*>($3);
+			ptr->push_back($2);
+			free($2);
+			$$ = new VariablesDefinitionStatement((Type)$1, *ptr);
+			delete ptr;
+			
+		}
+	|	IDENTIFIER ASSIGN expression SEMICOLON {
+			$$ = new AssignStatement($1, (Expression*)$3);
+			free($1);
+		}
+	|	OUTPUT expression SEMICOLON {
+			$$ = new OutputStatement((Expression*)$2); 
+		}
+	|	OUTPUT condition SEMICOLON {
+			$$ =new OutputStatement((Condition*)$2);
+		}
+	|	INPUT expression IDENTIFIER SEMICOLON {
+			$$ = new InputStatement($3, (Expression*)$2);
+			free($3);
+		}
+	|	control {
+			$$ = new ControlStatement((Control*)$1);
+		}
+	;
+
 
 condition:
 		expression NE expression {
