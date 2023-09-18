@@ -178,3 +178,148 @@ Term BinaryExpression::minusAction() {
 
 	throw runtime_error("Invalid operands to - operator");
 }
+
+
+Term BinaryExpression::concatAction() {
+
+	Term left_term = this->left->evaluate(), right_t = this->right->evaluate();
+	Type left_type = left_term.getType();
+	Type right_type = right_t.getType();
+	
+	void* left_v = left_term.getValue();
+	void* right_v = right_t.getValue();
+
+	switch (left_type) {
+		case Type::integer: {
+			switch (right_type)
+			{
+				case Type::integer: {
+					throw runtime_error("Invalid operands for '#': integer # integer");
+				}
+				case Type::character: {
+					throw runtime_error("Invalid operands for '#': integer # character");
+				}
+				case Type::word: {
+					throw runtime_error("Invalid operands for '#': integer # word");
+				}
+				case Type::sentence: {
+					throw runtime_error("Invalid operands for '#': integer # sentence");
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		case Type::character: {
+			switch (right_type)
+			{
+				case Type::integer: {
+					throw runtime_error("Invalid operands for '#': character # integer");
+				}
+				case Type::character: {
+					string* result = new string();
+					*result += *(char*)left_v;
+					*result += *(char*)right_v;
+					if (*(char*)left_v == ' ' || *(char*)right_v == ' ') {
+						*result += "\n";
+						return Term(result, Type::sentence);
+					}
+					return Term(result, Type::word);
+				}
+				case Type::word: {
+					string* result = new string();
+					*result += *(char*)left_v;
+					*result += *(string*)right_v;
+					if (*(char*)left_v == ' ') {
+						*result += "\n";
+						return Term(result, Type::sentence);
+					}
+					return Term(result, Type::word);
+				}
+				case Type::sentence: {
+					string *result = new string();
+					*result += *(char*)left_v;
+					*result += *(string*)right_v;
+					return Term(result, Type::sentence);
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		case Type::word: {
+			switch (right_type) {
+				case Type::integer: {
+					throw runtime_error("Invalid operands for '#': word # integer");
+				}
+				case Type::character: {
+					string *result = new string();
+					*result += *(string*)left_v;
+					*result += *(char*)right_v;
+					if (*(char*)right_v == ' ') {
+						*result += "\n";
+						return Term(result, Type::sentence);
+					}
+					return Term(result, Type::word);
+				}
+				case Type::word: {
+					string *result = new string();
+					*result += *(string*)left_v;
+					*result += *(string*)right_v;
+					return Term(result, Type::word);
+				}
+				case Type::sentence: {
+					string *result = new string();
+					*result += *(string*)left_v;
+					*result += " ";
+					*result += *(string*)right_v;
+					return Term(result, Type::sentence);
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		case Type::sentence: {
+			switch (right_type) {
+				case Type::integer: {
+					throw runtime_error("Invalid operands for '#': sentence # integer");
+				}
+				case Type::character: {
+					string *result = new string();
+					*result += *(string*)left_v;
+					result->pop_back();
+					*result += *(char*)right_v;
+					*result += "\n";
+					return Term(result, Type::sentence);
+				}
+				case Type::word: {
+					string *result = new string();
+					*result += *(string*)left_v;
+					result->pop_back();
+					if (*(string*)left_v != "\n" && *(string*)right_v != "")
+						*result += " ";
+					*result += *(string*)right_v;
+					*result += "\n";
+					return Term(result, Type::sentence);
+				}
+				case Type::sentence: {
+					string *result = new string();
+					*result += *(string*)left_v;
+					result->pop_back();
+					if (*(string*)left_v != "\n" && *(string*)right_v != "\n")
+						*result += " ";
+					*result += *(string*)right_v;
+					return Term(result, Type::sentence);
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		default:
+			break;
+	}
+	throw runtime_error("Invalid operands to + operator");
+
+}
