@@ -179,7 +179,6 @@ Term BinaryExpression::minusAction() {
 	throw runtime_error("Invalid operands to - operator");
 }
 
-
 Term BinaryExpression::concatAction() {
 
 	Term left_term = this->left->evaluate(), right_t = this->right->evaluate();
@@ -323,3 +322,61 @@ Term BinaryExpression::concatAction() {
 	throw runtime_error("Invalid operands to + operator");
 
 }
+
+Term BinaryExpression::indexAction() {
+
+	Term left_term = this->left->evaluate(), right_t = this->right->evaluate();
+
+	Type left_type = left_term.getType();
+	Type right_type = right_t.getType();
+	
+	void* left_v = left_term.getValue();
+	void* right_v = right_t.getValue();
+
+	if (right_type != Type::integer)
+		throw runtime_error("Right-hand side of : operator must be an integer");
+
+	int index = *((int*)right_v);
+
+	switch (left_type) {
+		case Type::integer: {
+			throw runtime_error("Cannot index an integer");
+		}
+		case Type::character: {
+			if (index == 0)
+				return Term(left_v, Type::character);
+			char *nullChar = new char('\0');
+			return Term(nullChar, Type::character);
+		}
+		case Type::word: {
+			char *result = new char('\0');
+
+			string word = *(string*)left_v;
+
+			if (index >= 0 && index < word.size())
+				*result = word[index];
+			else if (index < 0 && index >= -1*word.size())
+				*result = word[index + word.size()];
+
+			return Term(result, Type::character);
+		}
+		case Type::sentence: {
+
+			stringstream ss(*(string*)left_v);
+			string token, *result = new string();
+			vector<string> words;
+			while (ss >> token) {
+				words.push_back(token);
+			}
+			if (index >= 0 && index < words.size())
+				*result = words[index];
+			else if (index < 0 && index >= -1*words.size())
+				*result = words[index + words.size()];
+			return Term(result, Type::word);
+		}
+		default:
+			break;
+	}
+	throw runtime_error("Invalid operands to : operator");
+}
+
