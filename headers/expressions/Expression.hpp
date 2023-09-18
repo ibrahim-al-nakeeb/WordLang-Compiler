@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <stdexcept>
-#include "../Term/Term.hpp"
+#include "../term/Term.hpp"
 
 enum class Action {
 	plus,
