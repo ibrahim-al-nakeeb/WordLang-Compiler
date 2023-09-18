@@ -32,12 +32,22 @@
 
 %type <INTEGER> type
 %type <VOID> term
+%type <VOID> variablesList
 
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
 
 %%
+
+variablesList:
+		variablesList COMMA IDENTIFIER { 
+			static_cast<list<string>*>($1)->push_back($3);
+			free($3);
+			$$ = $1;
+		}
+	|	{ $$ = new list<string>(); }
+	;
 
 term:
 		SENTENCE_LITERAL {
