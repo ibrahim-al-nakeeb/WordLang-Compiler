@@ -1,7 +1,7 @@
 # WordLang Compiler
 
 ## Overview
-WordLang is a unique language designed to facilitate manipulation of words and sentences through specialized data types and operators. This repository contains a compiler that translates WordLang code into C or C++.
+WordLang is a unique language designed to facilitate manipulation of words and sentences through specialized data types and operators. This repository contains a compiler that translates WordLang code into C++.
 
 ## Features
 
