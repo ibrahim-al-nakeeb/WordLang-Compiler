@@ -34,12 +34,41 @@
 %type <VOID> term
 %type <VOID> variablesList
 %type <VOID> expression
+%type <VOID> condition
 
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
 
 %%
+
+condition:
+		expression NE expression {
+			$$ = new BinaryCondition((Expression*)$1, (Expression*)$3, ComparisonOperator::NotEqual);
+		}
+	|	expression LT expression {
+			$$ = new BinaryCondition((Expression*)$1, (Expression*)$3, ComparisonOperator::LessThan);
+		}
+	|	expression GT expression {
+			$$ = new BinaryCondition((Expression*)$1, (Expression*)$3,  ComparisonOperator::GreaterThan);
+		}
+	|	expression EQ expression {
+			$$ = new BinaryCondition((Expression*)$1, (Expression*)$3, ComparisonOperator::Equal);
+		}
+	|	expression GE expression {
+			$$ = new BinaryCondition((Expression*)$1, (Expression*)$3, ComparisonOperator::GreaterThanOrEqual);
+		}
+	|	expression LE expression {
+			$$ = new BinaryCondition((Expression*)$1, (Expression*)$3, ComparisonOperator::LessThanOrEqual);
+		}
+	|	expression {
+			$$ = new UnaryCondition((Expression*)$1);
+		}
+	
+	|	NOT condition {
+			$$ = new UnaryCondition((Condition*)$2);
+		}
+	;
 
 expression:	
 		expression CONCAT expression {
