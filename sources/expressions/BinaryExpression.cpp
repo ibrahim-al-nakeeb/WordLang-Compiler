@@ -380,3 +380,33 @@ Term BinaryExpression::indexAction() {
 	throw runtime_error("Invalid operands to : operator");
 }
 
+void BinaryExpression::print(int level, ofstream& out) {
+	
+	printDepth(level, out);
+	out << "new BinaryExpression(" << endl;
+	left->print(level + 1, out);
+	out << "," << endl;
+	printDepth(level + 1, out);
+	out << "Action::";
+	switch (action) {
+		case Action::plus:
+			out << "plus";
+			break;
+		case Action::minus:
+			out << "minus";
+			break;
+		case Action::concat:
+			out << "concat";
+			break;
+		case Action::index:
+			out << "index";
+			break;
+		default:
+			break;
+	}
+	out << "," << endl;
+	right->print(level + 1, out);
+	out << endl;
+	printDepth(level, out);
+	out << ")";
+}
