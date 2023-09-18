@@ -30,21 +30,26 @@
 %token <CHARACTER> CHAR_LITERAL
 %token <STRING> IDENTIFIER WORD_LITERAL SENTENCE_LITERAL
 
+%type <VOID> term
+%type <VOID> block
 %type <INTEGER> type
-%type <VOID> term, 
-%type <VOID> variablesList
-%type <VOID> expression
-%type <VOID> condition
 %type <VOID> control
 %type <VOID> statement
+%type <VOID> condition
+%type <VOID> expression
 %type <VOID> statements
-%type <VOID> block
+%type <VOID> variablesList
 
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
 
 %%
+
+prog:
+		statements	{ program = (list<Statement*>*)$1; }
+	|				{}
+	;
 
 control:
 		IF LPAREN condition RPAREN block %prec PREC_ELSE {
