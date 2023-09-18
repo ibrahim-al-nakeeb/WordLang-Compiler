@@ -30,7 +30,20 @@
 %token <CHARACTER> CHAR_LITERAL
 %token <STRING> IDENTIFIER WORD_LITERAL SENTENCE_LITERAL
 
+%type <INTEGER> type
+
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
+
+%%
+
+type:
+		SENTENCE	{ $$ = (int)Type::sentence;		}
+	|	INT			{ $$ = (int)Type::integer;		}
+	|	CHAR		{ $$ = (int)Type::character;	}
+	|	WORD		{ $$ = (int)Type::word;			}
+	;
+
+%%
 
