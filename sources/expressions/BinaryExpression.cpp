@@ -22,3 +22,13 @@ Term BinaryExpression::evaluate() {
 	}
 }
 
+
+Term BinaryExpression::plusAction() {
+	Term left_term = this->left->evaluate(), right_t = this->right->evaluate();
+
+	if (left_term.getType() != Type::integer || right_t.getType() != Type::integer) 
+		throw runtime_error("Invalid operands to + operator");
+	
+	int *result = new int(*(int*)left_term.getValue() + *(int*)right_t.getValue());
+	return Term(result, Type::integer);
+}
