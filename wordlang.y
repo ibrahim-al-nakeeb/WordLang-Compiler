@@ -31,12 +31,43 @@
 %token <STRING> IDENTIFIER WORD_LITERAL SENTENCE_LITERAL
 
 %type <INTEGER> type
+%type <VOID> term
 
 %left PLUS MINUS
 %left CONCAT
 %left INDEX
 
 %%
+
+term:
+		SENTENCE_LITERAL {
+			string *str = new string($1);
+			$$ = new Terminal(str, Type::sentence);
+			free($1);
+		}
+	|	CHAR_LITERAL { 
+			char *ptr = new char($1);
+			$$ = new Terminal(ptr, Type::character);
+		}
+	|	WORD_LITERAL {
+			string *str = new string($1);
+			$$ = new Terminal(str, Type::word);
+			free($1);
+		}
+	|	IDENTIFIER {
+			string *str = new string($1);
+			$$ = new Terminal(str, Type::identifier);
+			free($1);
+		}
+	|	INTEGER_LITERAL { 
+			int *ptr = new int($1);
+			$$ = new Terminal(ptr, Type::integer);
+		}
+	|	MINUS INTEGER_LITERAL {
+			int *ptr = new int(-1*$2);
+			$$ = new Terminal(ptr, Type::integer);
+		}
+	;
 
 type:
 		SENTENCE	{ $$ = (int)Type::sentence;		}
