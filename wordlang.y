@@ -219,3 +219,35 @@ type:
 
 %%
 
+
+nt main(int argc, char *argv[]) {
+
+	// Check if there's at least one argument provided (besides the program name itself)
+	if (argc < 2) {
+		cout << "Please specify an input file" << endl << "Usage: \033[32m./wordlang <file>\033[0m" << endl; 
+		return EXIT_FAILURE;
+	}
+
+	// Try to open the file provided as an argument
+	yyin = fopen(argv[1], "r");
+	if (yyin == nullptr) {
+		// Print an error message if the file couldn't be opened
+		cerr << "Error: Unable to open file '" << argv[1] << "'." << endl;
+		return EXIT_FAILURE;
+	}
+
+	// Parse the input
+	yyparse();
+
+	// Build the program
+	build(program);
+
+	// Close the input file
+	fclose(yyin);
+
+	freeProgram(program);
+
+	cout << "Wordlang file compiled successfully." << endl << "Run:\n\033[32mmake run\033[0m" << endl;
+
+	return EXIT_SUCCESS;
+}
