@@ -1,20 +1,21 @@
 #include "../../headers/term/Term.hpp"
 
-Term::Term()  {
+Term::Term() {
 	this->type = Type::integer;
 	this->value = new int(0);
 }
 
-Term::Term(const Term& t) {
+Term::Term(const Term& t) : value(nullptr) {
 
 	this->type = t.type;
 	this->setValue(t.value, t.type);
 }
 
-Term::Term(void* value, Type type) {
+Term::Term(void* value, Type type) : value(nullptr) {
 	
 	this->type = type;
 	this->setValue(value, type);
+	free(value);
 }
 
 Term::~Term() {
@@ -23,7 +24,10 @@ Term::~Term() {
 
 
 void Term::setValue(void* value, Type type) {
-	free(this->value);
+
+	if (this->value != nullptr)
+		free(this->value);
+	
 	this->type = type;
 
 	switch (type) {
@@ -39,7 +43,6 @@ void Term::setValue(void* value, Type type) {
 			this->value = new string(*(string*)value);
 			break;
 	}
-	free(value);
 }
 
 void* Term::getValue() const {
