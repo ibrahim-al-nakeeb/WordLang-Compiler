@@ -53,7 +53,7 @@ void yyerror(const string message) {
 
 void build(list<Statement*> *prog) {
 
-	ofstream result("sources/result/result.cpp");
+	ofstream result("sources/output/output.cpp");
 	if (!result.is_open()) {
 		cout << "Error opening file" << endl;
 		exit(EXIT_FAILURE);
