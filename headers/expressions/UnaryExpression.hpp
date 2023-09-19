@@ -8,7 +8,7 @@
 
 class UnaryExpression : public Expression {
 
-	Term* Term;
+	Term* term;
 
 public:
 	UnaryExpression(Term* l = nullptr);
