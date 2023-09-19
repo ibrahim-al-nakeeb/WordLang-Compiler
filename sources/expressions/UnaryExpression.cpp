@@ -1,19 +1,19 @@
 #include "../../headers/expressions/UnaryExpression.hpp"
 
-UnaryExpression::UnaryExpression(Term* t) : Term(t) {}
+UnaryExpression::UnaryExpression(Term* t) : term(t) {}
 
 UnaryExpression::~UnaryExpression() {
-	delete Term;
+	delete term;
 }
 
 Term UnaryExpression::evaluate() {
-	return *Term;
+	return *term;
 }
 
 void UnaryExpression::print(int level, ofstream& out) {
 	printDepth(level, out);
 	out << "new UnaryExpression(" << endl;
-	Term->print(level + 1, out);
+	term->print(level + 1, out);
 	printDepth(level, out);
 	out << ")";
 }
