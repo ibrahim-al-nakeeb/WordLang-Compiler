@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
 
 	// Check if there's at least one argument provided (besides the program name itself)
 	if (argc < 2) {
-		cout << "Please specify an input file" << endl << "Usage: \033[32m./wordlang <file>\033[0m" << endl; 
+		cout << "Please specify an input file" << endl << "Usage: \033[32mbin/wordlang <file>\033[0m" << endl; 
 		return EXIT_FAILURE;
 	}
 
