@@ -183,30 +183,30 @@ variablesList:
 term:
 		SENTENCE_LITERAL {
 			string *str = new string($1);
-			$$ = new Terminal(str, Type::sentence);
+			$$ = new Term(str, Type::sentence);
 			free($1);
 		}
 	|	CHAR_LITERAL { 
 			char *ptr = new char($1);
-			$$ = new Terminal(ptr, Type::character);
+			$$ = new Term(ptr, Type::character);
 		}
 	|	WORD_LITERAL {
 			string *str = new string($1);
-			$$ = new Terminal(str, Type::word);
+			$$ = new Term(str, Type::word);
 			free($1);
 		}
 	|	IDENTIFIER {
 			string *str = new string($1);
-			$$ = new Terminal(str, Type::identifier);
+			$$ = new Term(str, Type::identifier);
 			free($1);
 		}
 	|	INTEGER_LITERAL { 
 			int *ptr = new int($1);
-			$$ = new Terminal(ptr, Type::integer);
+			$$ = new Term(ptr, Type::integer);
 		}
 	|	MINUS INTEGER_LITERAL {
 			int *ptr = new int(-1*$2);
-			$$ = new Terminal(ptr, Type::integer);
+			$$ = new Term(ptr, Type::integer);
 		}
 	;
 
