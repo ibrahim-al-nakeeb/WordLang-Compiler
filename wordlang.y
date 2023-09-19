@@ -167,7 +167,7 @@ expression:
 			$$ = $2;
 		}
 	|	term {
-			$$ = new UnaryExpression((term*)$1);
+			$$ = new UnaryExpression((Term*)$1);
 		}
 	;
 
@@ -220,7 +220,7 @@ type:
 %%
 
 
-nt main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
 	// Check if there's at least one argument provided (besides the program name itself)
 	if (argc < 2) {
