@@ -19,7 +19,7 @@ void Assign::execute() {
 
 void Assign::print(int level, ofstream& out) {
 	printDepth(level, out);
-	out << "new AssignStatement(" << endl;
+	out << "new Assign(" << endl;
 	printDepth(level + 1, out);
 	out << "\"" << variable << "\"," << endl;
 	expression->print(level + 1, out);
