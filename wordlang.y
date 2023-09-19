@@ -98,22 +98,22 @@ statement:
 			list<string> *ptr = static_cast<list<string>*>($3);
 			ptr->push_back($2);
 			free($2);
-			$$ = new VariablesDefinitionStatement((Type)$1, *ptr);
+			$$ = new VariablesDeclaration((Type)$1, *ptr);
 			delete ptr;
 			
 		}
 	|	IDENTIFIER ASSIGN expression SEMICOLON {
-			$$ = new AssignStatement($1, (Expression*)$3);
+			$$ = new Assign($1, (Expression*)$3);
 			free($1);
 		}
 	|	OUTPUT expression SEMICOLON {
-			$$ = new OutputStatement((Expression*)$2); 
+			$$ = new Output((Expression*)$2); 
 		}
 	|	OUTPUT condition SEMICOLON {
-			$$ =new OutputStatement((Condition*)$2);
+			$$ =new Output((Condition*)$2);
 		}
 	|	INPUT expression IDENTIFIER SEMICOLON {
-			$$ = new InputStatement($3, (Expression*)$2);
+			$$ = new Input($3, (Expression*)$2);
 			free($3);
 		}
 	|	control {
