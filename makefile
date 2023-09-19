@@ -18,7 +18,7 @@ all: create-dirs $(BIN_DIR)/wordlang
 
 # Create directories
 create-dirs:
-	@mkdir -p $(SRC_DIR)/{bison,flex}
+	@mkdir -p $(SRC_DIR)/{bison,flex, output}
 	@mkdir -p $(INC_DIR)/bison
 	@mkdir -p $(OBJ_DIR)/{bison,flex}
 	@mkdir -p $(BIN_DIR)
@@ -57,7 +57,7 @@ run: $(BIN_DIR)/output
 clean:
 	@rm -rf $(OBJ_DIR)
 	@rm -rf $(BIN_DIR)
-	@rm -rf $(SRC_DIR)/{bison,flex}
+	@rm -rf $(SRC_DIR)/{bison,flex, output}
 	@rm -rf $(INC_DIR)/bison
 
 
