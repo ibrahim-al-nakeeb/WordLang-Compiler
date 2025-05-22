@@ -1,0 +1,230 @@
+@startuml wordlang compiler class diagram
+
+'==== ENUMS ====
+enum Type {
+	integer
+	character
+	word
+	sentence
+	identifier
+}
+
+enum ComparisonOperator {
+	GreaterThanOrEqual
+	GreaterThan
+	LessThan
+	LessThanOrEqual
+	Equal
+	NotEqual
+	Not
+	Val
+}
+
+enum Action {
+	plus
+	minus
+	concat
+	index
+}
+
+'==== CLASSES ====
+class SymbolTable {
+	+addSymbol(name: string, type: Type): void
+	+getSymbolValue(name: string): void*
+	+setSymbolValue(name: string, value: void*, type: Type): void
+	+getSymbolType(name: string): Type
+	+removeSymbol(name: string): void
+	-- 
+	-table: unordered_map<string, Symbol>
+}
+
+class Symbol {
+	type: Type
+	value: void*
+}
+
+class Term {
+	-setValue(value: void*, type: Type): void
+	+getValue(): void*
+	+getType(): Type
+	--
+	value: void*
+	type: Type
+}
+
+'==== CONDITION CLASSES ====
+abstract class Condition {
+	+evaluate(): bool
+}
+
+class BinaryCondition {
+	+evaluate(): bool
+	--
+	op: ComparisonOperator
+	left: Expression
+	right: Expression
+}
+
+class UnaryCondition {
+	+evaluate(): bool
+	--
+	op: ComparisonOperator
+	condition: Condition
+	expression: Expression
+}
+
+'==== CONTROL CLASSES ====
+abstract class Control {
+	+execute(): void
+	--
+	blockStatement: list<Statement*>
+}
+
+class If {
+	+execute(): void
+	--
+	condition: Condition
+}
+
+class IfElse {
+	+execute(): void
+	--
+	condition: Condition
+	secondBlockStatement: list<Statement*>
+}
+
+class Loop {
+	+execute(): void
+	--
+	expression: Expression
+}
+
+class While {
+	+execute(): void
+	--
+	condition: Condition
+}
+
+'==== EXPRESSION CLASSES ====
+abstract class Expression {
+	+evaluate(): Term
+}
+
+class UnaryExpression {
+	+evaluate(): Term
+	--
+	term: Term
+}
+
+class BinaryExpression {
+	+evaluate(): Term
+	+plusAction(): Term
+	+minusAction(): Term
+	+concatAction(): Term
+	+indexAction(): Term
+	--
+	left: Expression
+	right: Expression
+	action: Action
+}
+
+'==== STATEMENT CLASSES ====
+abstract class Statement {
+	+execute(): void
+}
+
+class Assign {
+	+execute(): void
+	--
+	variable: string
+	expression: Expression
+}
+
+class ControlStatement {
+	+execute(): void
+	--
+	control: Control
+}
+
+class Input {
+	+execute(): void
+	--
+	variable: string
+	prompt: Expression
+}
+
+class Output {
+	+execute(): void
+	--
+	expression: Expression
+	condition: Condition
+}
+
+class VariablesDeclaration {
+	+execute(): void
+	+getVariables(): list<string>
+	--
+	type: Type
+	variablesList: list<string>
+}
+
+'==== RELATIONSHIPS ====
+SymbolTable --> Symbol
+
+
+Condition <|-- UnaryCondition
+Condition <|-- BinaryCondition
+
+BinaryCondition --> Expression
+BinaryCondition --> ComparisonOperator
+
+UnaryCondition --> Condition
+UnaryCondition --> Expression
+UnaryCondition --> ComparisonOperator
+
+
+Control <|-- If
+Control <|-- IfElse
+Control <|-- Loop
+Control <|-- While
+
+Control --> Statement
+
+If --> Condition
+
+IfElse --> Condition
+IfElse --> Statement
+
+While --> Condition
+
+Loop --> Expression
+
+
+Expression <|-- UnaryExpression
+Expression <|-- BinaryExpression
+
+UnaryExpression --> Term
+
+BinaryExpression --> Expression
+BinaryExpression --> Action
+
+
+Statement <|-- Assign
+Statement <|-- ControlStatement
+Statement <|-- Input
+Statement <|-- Output
+Statement <|-- VariablesDeclaration
+
+Assign --> Expression
+
+ControlStatement --> Control
+
+Input --> Expression
+
+Output --> Expression
+Output --> Condition
+
+VariablesDeclaration --> Type
+
+
+@enduml
