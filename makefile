@@ -1,6 +1,6 @@
 # Compiler
 CC = g++
-FLAGS = -std=c++14 -Iheaders
+FLAGS = -std=c++14 -Iheaders -Iheaders/bison
 
 # Directories
 SRC_DIR = sources
