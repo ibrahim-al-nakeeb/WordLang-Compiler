@@ -60,7 +60,9 @@ run: $(BIN_DIR)/output
 clean:
 	@rm -rf $(OBJ_DIR)
 	@rm -rf $(BIN_DIR)
-	@rm -rf $(SRC_DIR)/{bison,flex,output}
+	@rm -rf $(SRC_DIR)/bison
+	@rm -rf $(SRC_DIR)/flex
+	@rm -rf $(SRC_DIR)/output
 	@rm -rf $(INC_DIR)/bison
 
 
