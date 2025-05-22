@@ -20,6 +20,7 @@ Term BinaryExpression::evaluate() {
 		default:
 			break;
 	}
+	return Term();
 }
 
 Term BinaryExpression::plusAction() {
