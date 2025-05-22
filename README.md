@@ -20,7 +20,10 @@ WordLang is a unique language designed to facilitate manipulation of words and s
 ### Variable Definition
 Variables are defined using the following syntax:
 
-<type> <variable name list>;
+```
+<type> <variable_name>[, <variable_name>...];
+```
+
 
 For example:
 ```WordLang
@@ -70,3 +73,67 @@ s1 = s1#"wonderful"#"world"#'!'
 output s1               ➔      Outputs: We live in a wonderful world!
 output s1-"wonderful"   ➔      Outputs: We live in a world!
 output s1-'w'           ➔      Outputs: We live in a onderful world!
+```
+
+
+## Getting Started
+
+### Prerequisites
+
+Make sure the following tools are installed on your system:
+
+* `g++` (C++14)
+* `bison`
+* `flex`
+
+You can install them on Ubuntu/Debian with:
+
+```bash
+sudo apt update
+sudo apt install g++ bison flex
+```
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ibrahim-al-nakeeb/WordLang-Compiler.git
+cd WordLang-Compiler
+```
+
+Build the compiler using:
+
+```bash
+make
+```
+
+### Usage
+
+To compile a WordLang program, run:
+
+```bash
+bin/wordlang path/to/code.wl
+```
+
+This will generate a C++ file.
+
+To compile it into an executable and execute the compiled script:
+
+```bash
+make run
+```
+
+## Class Diagram
+
+The diagram below outlines the structure of the compiler. The class hierarchy may look a bit complex at first glance, but it’s designed to keep the logic modular and extendable — especially when handling different expression and statement types.
+
+![Class Diagram](uml/wordlang_compiler_class_diagram.svg)
+
+## Notes
+
+This project was built to experiment with compiler design, language parsing, and operator overloading in C++. The inheritance model might seem deep, but it makes adding new language features a lot cleaner once you get the flow.
+
+Feel free to clone, mess around, and improve it.
+PRs and issues are welcome.
+Happy compiling! 🚀
