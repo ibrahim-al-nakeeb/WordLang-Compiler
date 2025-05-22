@@ -247,7 +247,7 @@ int main(int argc, char *argv[]) {
 
 	freeProgram(program);
 
-	cout << "Wordlang file compiled successfully." << endl << "Run:\n\033[32mmake run\033[0m" << endl;
+	cout << "Wordlang file compiled successfully." << endl << "Run: \033[32mmake run\033[0m" << endl;
 
 	return EXIT_SUCCESS;
 }
